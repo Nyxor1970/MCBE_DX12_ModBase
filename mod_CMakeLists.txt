@@ -4,12 +4,13 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 include(FetchContent)
-set(DOBBY_GENERATE_SHARED OFF CACHE BOOL "" FORCE)
-FetchContent_Declare(dobby
-  GIT_REPOSITORY https://github.com/jmpews/Dobby.git
+FetchContent_Declare(and64
+  GIT_REPOSITORY https://github.com/Rprop/And64InlineHook.git
   GIT_TAG master)
-FetchContent_MakeAvailable(dobby)
+FetchContent_MakeAvailable(and64)
 
-add_library(mod SHARED main.cpp)
-target_include_directories(mod PRIVATE ${dobby_SOURCE_DIR}/include)
-target_link_libraries(mod dobby log dl)
+add_library(mod SHARED
+  main.cpp
+  ${and64_SOURCE_DIR}/And64InlineHook.cpp)
+target_include_directories(mod PRIVATE ${and64_SOURCE_DIR})
+target_link_libraries(mod log dl)
