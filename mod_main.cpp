@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "dobby.h"
+#include "And64InlineHook.hpp"
 
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO, "NetherMod", __VA_ARGS__)
 
@@ -37,9 +37,9 @@ static void* worker(void*) {
     while (!(base = getBase("libminecraftpe.so"))) usleep(200000);
     LOGI("base = %p", (void*)base);
     if (!DIM_CTOR_RVA) { LOGI("RVA not set, skipping hook"); return nullptr; }
-    int r = DobbyHook((void*)(base + DIM_CTOR_RVA),
-                      (void*)hook_DimCtor, (void**)&orig_DimCtor);
-    LOGI("DobbyHook = %d", r);
+    A64HookFunction((void*)(base + DIM_CTOR_RVA),
+                    (void*)hook_DimCtor, (void**)&orig_DimCtor);
+    LOGI("hook installed, orig = %p", (void*)orig_DimCtor);
     return nullptr;
 }
 
